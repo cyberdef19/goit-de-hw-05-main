@@ -35,6 +35,7 @@ try:
                     )
             sensor_name = message.value["uuid_sensor"]
             date_event = message.value["date_event"]
+           
             try:
                 if message.value["temperature"] > 40:
                     temperature_alerts = "oleksiy_temperature_alerts"
@@ -47,6 +48,8 @@ try:
                     }
                     producer.send(temperature_alerts, key=str(sensor_name), value=data_temp_alert)
                     producer.flush()
+                    print(f"Temperature alert sent for sensor {sensor_name} with temperature {temperature}")
+        
                 if message.value["humidity"] > 80 or message.value["humidity"] < 20:
                     humidity_alerts = "oleksiy_humidity_alerts"
                     humidity = message.value["humidity"]
@@ -60,6 +63,7 @@ try:
                     }
                     producer.send(humidity_alerts, key=str(sensor_name), value=data_humidity_alert)
                     producer.flush()
+                    print(f"Humidity alert sent for sensor {sensor_name} with humidity {humidity}")
             except Exception as ex:
                 print(f"incorrect producer: {str(ex)}")
 

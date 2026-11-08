@@ -1,8 +1,8 @@
-from kafka import KafkaConsumer, KafkaProducer, JsonSerializer  
+from kafka import KafkaConsumer, KafkaProducer, JsonSerializer
 from configs import kafka_config
 import json
 
-topic_name = "building_sensors"
+topic_name = "oleksiy_building_sensors"
 consumer_building = KafkaConsumer(
       bootstrap_servers=kafka_config["bootstrap_servers"],
       security_protocol=kafka_config["security_protocol"],

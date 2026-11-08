@@ -1,6 +1,5 @@
 from kafka import KafkaConsumer, JsonSerializer
 from configs import kafka_config
-import json
 
 topic_temp_name = "oleksiy_temperature_alerts"
 topic_humidity_name = "oleksiy_humidity_alerts"
@@ -35,14 +34,17 @@ consumer_temp.subscribe([topic_temp_name])
 consumer_humidity.subscribe([topic_humidity_name])
 
 try:
-    for message in consumer_temp:
-        print(f"Temperature Alert: {message.value}")
-
-    for message in consumer_humidity:
-        print(f"Humidity Alert: {message.value}")
+    while True:
+        for consumer, alert_type in (
+            (consumer_temp, "Temperature"),
+            (consumer_humidity, "Humidity"),
+        ):
+            for messages in consumer.poll(timeout_ms=1000).values():
+                for message in messages:
+                    print(f"{alert_type} Alert: {message.value}")
 except KeyboardInterrupt:
     print("Consumer stopped.")
-    
-consumer_temp.close()
-consumer_humidity.close()
+finally:
+    consumer_temp.close()
+    consumer_humidity.close()
 

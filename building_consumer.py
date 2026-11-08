@@ -1,4 +1,4 @@
-from kafka import KafkaConsumer, KafkaProducer
+from kafka import KafkaConsumer, KafkaProducer, JsonSerializer  
 from configs import kafka_config
 import json
 
@@ -9,8 +9,8 @@ consumer_building = KafkaConsumer(
       sasl_mechanism=kafka_config["sasl_mechanism"],
       sasl_plain_username=kafka_config["username"],
       sasl_plain_password=kafka_config["password"],
-      value_deserializer=lambda v: json.load(v.decode('utf-8')),
-      key_deserializer=lambda v: json.load(v.decode('utf-8')),
+      value_deserializer=JsonSerializer(),
+      key_deserializer=JsonSerializer(),
       auto_offset_reset='earliest',
       enable_auto_commit=True,
       group_id="group_building_sensors"

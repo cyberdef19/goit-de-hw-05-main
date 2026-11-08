@@ -22,10 +22,10 @@ sensor_name = uuid.uuid4()
 for i in range(15):
     try:
           data = {
-               "uuid_sensor": sensor_name,
+               "uuid_sensor": str(sensor_name),
                "temperature": random.randint(25, 46),
                "humidity": random.randint(15, 86),
-               "date_event": datetime.datetime.now()
+               "date_event": datetime.datetime.now().isoformat()
           }
 
           producer.send(building_sensors_topic, key=str(sensor_name), value=data)
@@ -35,8 +35,10 @@ for i in range(15):
           time.sleep(5)
     except Exception as ex:
         print(f"incorrect data {str(ex)}")
-    finally:
-         producer.close()
+
+producer.close()
+    
+         
 
 
 
